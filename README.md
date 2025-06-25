@@ -64,6 +64,8 @@ A comprehensive web-based photobooth application with advanced features includin
    - `README.md`
 
 ### Running the Application
+1. Open Link: https://maishavermaa.github.io/PhotoBooth/
+*OR*
 1. Open `index.html` in your web browser
 2. Allow camera access when prompted
 3. Start taking photos and creating strips!
