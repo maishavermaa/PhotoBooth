@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhotoBooth Pro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <h1><i class="fas fa-camera"></i> PhotoBooth Pro</h1>
+            <div class="mode-toggle">
+                <button id="cameraMode" class="mode-btn active">Camera</button>
+                <button id="galleryMode" class="mode-btn">Gallery</button>
+                <button id="stripMode" class="mode-btn">Photo Strip</button>
+            </div>
+        </header>
+
+        <!-- Camera Section -->
+        <section id="cameraSection" class="section active">
+            <div class="camera-container">
+                <div class="camera-wrapper">
+                    <video id="video" autoplay playsinline></video>
+                    <canvas id="canvas" style="display: none;"></canvas>
+                    
+                    <!-- Filter Overlay -->
+                    <div id="filterOverlay" class="filter-overlay"></div>
+                    
+                    <!-- Camera Controls -->
+                    <div class="camera-controls">
+                        <div class="filter-controls">
+                            <button class="filter-btn" data-filter="none">Normal</button>
+                            <button class="filter-btn" data-filter="grayscale">B&W</button>
+                            <button class="filter-btn" data-filter="sepia">Sepia</button>
+                            <button class="filter-btn" data-filter="blur">Blur</button>
+                            <button class="filter-btn" data-filter="brightness">Bright</button>
+                            <button class="filter-btn" data-filter="contrast">Contrast</button>
+                            <button class="filter-btn" data-filter="vintage">Vintage</button>
+                        </div>
+                        
+                        <div class="capture-controls">
+                            <button id="captureBtn" class="capture-btn">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallerySection" class="section">
+            <div class="gallery-header">
+                <h2>Photo Gallery</h2>
+                <div class="gallery-controls">
+                    <button id="selectAllBtn" class="btn">Select All</button>
+                    <button id="deleteSelectedBtn" class="btn danger">Delete Selected</button>
+                </div>
+            </div>
+            <div id="galleryGrid" class="gallery-grid">
+                <!-- Photos will be dynamically loaded here -->
+            </div>
+        </section>
+
+        <!-- Photo Strip Section -->
+        <section id="stripSection" class="section">
+            <div class="strip-header">
+                <h2>Create Photo Strip</h2>
+                <p>Select 3 photos to create your photostrip</p>
+            </div>
+            
+            <!-- Strip Creator -->
+            <div class="strip-creator">
+                <h3>Select 3 Photos for Strip</h3>
+                <div class="selected-photos">
+                    <div class="selected-slot" data-slot="0">
+                        <i class="fas fa-plus"></i>
+                        <span>Click to select photo</span>
+                    </div>
+                    <div class="selected-slot" data-slot="1">
+                        <i class="fas fa-plus"></i>
+                        <span>Click to select photo</span>
+                    </div>
+                    <div class="selected-slot" data-slot="2">
+                        <i class="fas fa-plus"></i>
+                        <span>Click to select photo</span>
+                    </div>
+                </div>
+                
+                <div class="template-selection">
+                    <h4>Choose Template</h4>
+                    <div class="template-buttons">
+                        <button class="template-btn active" data-template="vertical">
+                            <i class="fas fa-grip-lines"></i> Vertical
+                        </button>
+                        <button class="template-btn" data-template="horizontal">
+                            <i class="fas fa-grip-lines-vertical"></i> Horizontal
+                        </button>
+                        <button class="template-btn" data-template="collage">
+                            <i class="fas fa-th"></i> Collage
+                        </button>
+                        <button class="template-btn" data-template="fancy">
+                            <i class="fas fa-crown"></i> Fancy
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Strip Customization -->
+                <div class="strip-customization">
+                    <h4>Customize Your Strip</h4>
+                    <div class="customization-grid">
+                        <div class="color-option">
+                            <label for="backgroundColorPicker">Background Color:</label>
+                            <input type="color" id="backgroundColorPicker" value="#ffffff">
+                        </div>
+                        
+                        <div class="color-option">
+                            <label for="borderColorPicker">Border Color:</label>
+                            <input type="color" id="borderColorPicker" value="#3498db">
+                        </div>
+                        
+                        <div class="color-option">
+                            <label for="textColorPicker">Text Color:</label>
+                            <input type="color" id="textColorPicker" value="#2c3e50">
+                        </div>
+                        
+                        <div class="text-option">
+                            <label for="stripTitle">Custom Title:</label>
+                            <input type="text" id="stripTitle" placeholder="PhotoBooth Memories" maxlength="30">
+                            <small>Drag text on preview to position</small>
+                        </div>
+                        
+                        <div class="text-boxes-section">
+                            <label>Text Boxes:</label>
+                            <div id="textBoxesList">
+                                <!-- Dynamic text boxes will be added here -->
+                            </div>
+                            <button type="button" id="addTextBoxBtn" class="btn btn-secondary">
+                                <i class="fas fa-plus"></i> Add Text Box
+                            </button>
+                        </div>
+                        
+                        <div class="stickers-section">
+                            <label>Stickers & Emojis:</label>
+                            <div class="sticker-options">
+                                <button type="button" class="sticker-btn" data-sticker="😀">😀</button>
+                                <button type="button" class="sticker-btn" data-sticker="😍">😍</button>
+                                <button type="button" class="sticker-btn" data-sticker="🎉">🎉</button>
+                                <button type="button" class="sticker-btn" data-sticker="❤️">❤️</button>
+                                <button type="button" class="sticker-btn" data-sticker="⭐">⭐</button>
+                                <button type="button" class="sticker-btn" data-sticker="🎈">🎈</button>
+                                <button type="button" class="sticker-btn" data-sticker="🌟">🌟</button>
+                                <button type="button" class="sticker-btn" data-sticker="💫">💫</button>
+                                <button type="button" class="sticker-btn" data-sticker="🎊">🎊</button>
+                                <button type="button" class="sticker-btn" data-sticker="🔥">🔥</button>
+                                <button type="button" class="sticker-btn" data-sticker="💖">💖</button>
+                                <button type="button" class="sticker-btn" data-sticker="✨">✨</button>
+                            </div>
+                        </div>
+                        
+                        <div class="toggle-option">
+                            <label>
+                                <input type="checkbox" id="showDate" checked>
+                                <span class="checkmark"></span>
+                                Show Date
+                            </label>
+                        </div>
+                        
+                        <div class="toggle-option">
+                            <label>
+                                <input type="checkbox" id="showBorder" checked>
+                                <span class="checkmark"></span>
+                                Show Border
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="strip-actions">
+                    <button id="downloadStripBtn" class="btn btn-primary" disabled>
+                        <i class="fas fa-download"></i> Download Strip
+                    </button>
+                </div>
+            </div>
+
+            <!-- Strip Preview -->
+            <div class="strip-preview">
+                <h3>Strip Preview</h3>
+                <div class="canvas-container">
+                    <canvas id="stripCanvas" width="400" height="600"></canvas>
+                </div>
+            </div>
+
+            <!-- Strip Gallery -->
+            <div class="strip-gallery">
+                <h3>Photo Gallery - Click to Select</h3>
+                <div id="stripGalleryGrid" class="gallery-grid"></div>
+            </div>
+        </section>
+
+        <!-- Photo Modal -->
+        <div id="photoModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div class="modal-header">
+                    <h3>Edit Photo</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="photo-editor">
+                        <canvas id="editCanvas" width="400" height="300"></canvas>
+                        <div class="editor-controls">
+                            <div class="filter-section">
+                                <h4>Filters:</h4>
+                                <div class="filter-buttons">
+                                    <button class="filter-btn" data-filter="none">Normal</button>
+                                    <button class="filter-btn" data-filter="grayscale">B&W</button>
+                                    <button class="filter-btn" data-filter="sepia">Sepia</button>
+                                    <button class="filter-btn" data-filter="blur">Blur</button>
+                                    <button class="filter-btn" data-filter="brightness">Bright</button>
+                                    <button class="filter-btn" data-filter="contrast">Contrast</button>
+                                    <button class="filter-btn" data-filter="vintage">Vintage</button>
+                                </div>
+                            </div>
+                            <div class="adjustment-section">
+                                <h4>Adjustments:</h4>
+                                <div class="sliders">
+                                    <label>Brightness: <input type="range" id="brightnessSlider" min="-100" max="100" value="0"></label>
+                                    <label>Contrast: <input type="range" id="contrastSlider" min="-100" max="100" value="0"></label>
+                                    <label>Saturation: <input type="range" id="saturationSlider" min="-100" max="100" value="0"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-actions">
+                            <button id="saveEditBtn" class="btn primary">Save Changes</button>
+                            <button id="downloadPhotoBtn" class="btn success">Download</button>
+                            <button id="cancelEditBtn" class="btn">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification -->
+        <div id="notification" class="notification">
+            <span id="notificationText"></span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
